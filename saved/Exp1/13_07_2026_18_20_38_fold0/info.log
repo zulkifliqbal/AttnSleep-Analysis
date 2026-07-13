@@ -1,0 +1,176 @@
+2026-07-13 18:20:38,252 - train - INFO - AttnSleep(
+  (mrcnn): MRCNN(
+    (GELU): GELU()
+    (features1): Sequential(
+      (0): Conv1d(1, 64, kernel_size=(50,), stride=(6,), padding=(24,), bias=False)
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): GELU()
+      (3): MaxPool1d(kernel_size=8, stride=2, padding=4, dilation=1, ceil_mode=False)
+      (4): Dropout(p=0.5, inplace=False)
+      (5): Conv1d(64, 128, kernel_size=(8,), stride=(1,), padding=(4,), bias=False)
+      (6): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (7): GELU()
+      (8): Conv1d(128, 128, kernel_size=(8,), stride=(1,), padding=(4,), bias=False)
+      (9): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (10): GELU()
+      (11): MaxPool1d(kernel_size=4, stride=4, padding=2, dilation=1, ceil_mode=False)
+    )
+    (features2): Sequential(
+      (0): Conv1d(1, 64, kernel_size=(400,), stride=(50,), padding=(200,), bias=False)
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): GELU()
+      (3): MaxPool1d(kernel_size=4, stride=2, padding=2, dilation=1, ceil_mode=False)
+      (4): Dropout(p=0.5, inplace=False)
+      (5): Conv1d(64, 128, kernel_size=(7,), stride=(1,), padding=(3,), bias=False)
+      (6): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (7): GELU()
+      (8): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,), bias=False)
+      (9): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (10): GELU()
+      (11): MaxPool1d(kernel_size=2, stride=2, padding=1, dilation=1, ceil_mode=False)
+    )
+    (dropout): Dropout(p=0.5, inplace=False)
+    (AFR): Sequential(
+      (0): SEBasicBlock(
+        (conv1): Conv1d(128, 30, kernel_size=(1,), stride=(1,))
+        (bn1): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv1d(30, 30, kernel_size=(1,), stride=(1,))
+        (bn2): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SELayer(
+          (avg_pool): AdaptiveAvgPool1d(output_size=1)
+          (fc): Sequential(
+            (0): Linear(in_features=30, out_features=1, bias=False)
+            (1): ReLU(inplace=True)
+            (2): Linear(in_features=1, out_features=30, bias=False)
+            (3): Sigmoid()
+          )
+        )
+        (downsample): Sequential(
+          (0): Conv1d(128, 30, kernel_size=(1,), stride=(1,), bias=False)
+          (1): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+  )
+  (tce): TCE(
+    (layers): ModuleList(
+      (0): EncoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (convs): ModuleList(
+            (0): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (1): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (2): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+          )
+          (linear): Linear(in_features=80, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=80, out_features=120, bias=True)
+          (w_2): Linear(in_features=120, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (sublayer_output): ModuleList(
+          (0): SublayerOutput(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (1): SublayerOutput(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (conv): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+      )
+      (1): EncoderLayer(
+        (self_attn): MultiHeadedAttention(
+          (convs): ModuleList(
+            (0): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (1): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (2): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+          )
+          (linear): Linear(in_features=80, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=80, out_features=120, bias=True)
+          (w_2): Linear(in_features=120, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (sublayer_output): ModuleList(
+          (0): SublayerOutput(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (1): SublayerOutput(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (conv): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+      )
+    )
+    (norm): LayerNorm()
+  )
+  (fc): Linear(in_features=2400, out_features=5, bias=True)
+)
+2026-07-13 18:21:00,583 - trainer - INFO -     epoch          : 1
+2026-07-13 18:21:00,584 - trainer - INFO -     loss           : 0.7952174322703217
+2026-07-13 18:21:00,584 - trainer - INFO -     accuracy       : 0.7101216376582279
+2026-07-13 18:21:00,584 - trainer - INFO -     val_loss       : 0.52578981872648
+2026-07-13 18:21:00,584 - trainer - INFO -     val_accuracy   : 0.8378363715277778
+2026-07-13 18:21:00,585 - trainer - INFO -     epoch_train_duration: 16.97
+2026-07-13 18:21:17,754 - trainer - INFO -     epoch          : 2
+2026-07-13 18:21:17,755 - trainer - INFO -     loss           : 0.5742893615100957
+2026-07-13 18:21:17,755 - trainer - INFO -     accuracy       : 0.803574960443038
+2026-07-13 18:21:17,755 - trainer - INFO -     val_loss       : 0.4077288848347962
+2026-07-13 18:21:17,755 - trainer - INFO -     val_accuracy   : 0.8916015625
+2026-07-13 18:21:17,755 - trainer - INFO -     epoch_train_duration: 17.17
+2026-07-13 18:21:34,081 - trainer - INFO -     epoch          : 3
+2026-07-13 18:21:34,082 - trainer - INFO -     loss           : 0.553273005953318
+2026-07-13 18:21:34,082 - trainer - INFO -     accuracy       : 0.8115357990506329
+2026-07-13 18:21:34,082 - trainer - INFO -     val_loss       : 0.41222408413887024
+2026-07-13 18:21:34,082 - trainer - INFO -     val_accuracy   : 0.8820529513888888
+2026-07-13 18:21:34,082 - trainer - INFO -     epoch_train_duration: 16.33
+2026-07-13 18:21:51,436 - trainer - INFO -     epoch          : 4
+2026-07-13 18:21:51,436 - trainer - INFO -     loss           : 0.5195518909375879
+2026-07-13 18:21:51,436 - trainer - INFO -     accuracy       : 0.8208811313291139
+2026-07-13 18:21:51,436 - trainer - INFO -     val_loss       : 0.49333574902266264
+2026-07-13 18:21:51,437 - trainer - INFO -     val_accuracy   : 0.86083984375
+2026-07-13 18:21:51,437 - trainer - INFO -     epoch_train_duration: 17.35
+2026-07-13 18:22:08,456 - trainer - INFO -     epoch          : 5
+2026-07-13 18:22:08,458 - trainer - INFO -     loss           : 0.5067316999163809
+2026-07-13 18:22:08,458 - trainer - INFO -     accuracy       : 0.8245895965189873
+2026-07-13 18:22:08,458 - trainer - INFO -     val_loss       : 0.4951912248507142
+2026-07-13 18:22:08,458 - trainer - INFO -     val_accuracy   : 0.8468967013888888
+2026-07-13 18:22:08,458 - trainer - INFO -     epoch_train_duration: 17.02
+2026-07-13 18:22:25,602 - trainer - INFO -     epoch          : 6
+2026-07-13 18:22:25,602 - trainer - INFO -     loss           : 0.5006063514495198
+2026-07-13 18:22:25,602 - trainer - INFO -     accuracy       : 0.8245895965189873
+2026-07-13 18:22:25,603 - trainer - INFO -     val_loss       : 0.5002669659588719
+2026-07-13 18:22:25,603 - trainer - INFO -     val_accuracy   : 0.8388671875
+2026-07-13 18:22:25,603 - trainer - INFO -     epoch_train_duration: 17.14
+2026-07-13 18:22:42,704 - trainer - INFO -     epoch          : 7
+2026-07-13 18:22:42,704 - trainer - INFO -     loss           : 0.48897206311738944
+2026-07-13 18:22:42,704 - trainer - INFO -     accuracy       : 0.8317098496835443
+2026-07-13 18:22:42,704 - trainer - INFO -     val_loss       : 0.45853521788376383
+2026-07-13 18:22:42,705 - trainer - INFO -     val_accuracy   : 0.857421875
+2026-07-13 18:22:42,705 - trainer - INFO -     epoch_train_duration: 17.1
+2026-07-13 18:23:39,969 - trainer - INFO -     epoch          : 8
+2026-07-13 18:23:39,969 - trainer - INFO -     loss           : 0.48128037201830104
+2026-07-13 18:23:39,970 - trainer - INFO -     accuracy       : 0.8331685126582279
+2026-07-13 18:23:39,970 - trainer - INFO -     val_loss       : 0.4430067395151127
+2026-07-13 18:23:39,970 - trainer - INFO -     val_accuracy   : 0.86572265625
+2026-07-13 18:23:39,970 - trainer - INFO -     epoch_train_duration: 57.26
+2026-07-13 18:24:31,203 - trainer - INFO -     epoch          : 9
+2026-07-13 18:24:31,204 - trainer - INFO -     loss           : 0.4754873978186257
+2026-07-13 18:24:31,204 - trainer - INFO -     accuracy       : 0.8368769778481012
+2026-07-13 18:24:31,204 - trainer - INFO -     val_loss       : 0.45233887748327106
+2026-07-13 18:24:31,204 - trainer - INFO -     val_accuracy   : 0.87353515625
+2026-07-13 18:24:31,205 - trainer - INFO -     epoch_train_duration: 51.23
+2026-07-13 18:25:15,007 - trainer - INFO -     epoch          : 10
+2026-07-13 18:25:15,008 - trainer - INFO -     loss           : 0.4698885012465187
+2026-07-13 18:25:15,008 - trainer - INFO -     accuracy       : 0.8372478243670886
+2026-07-13 18:25:15,008 - trainer - INFO -     val_loss       : 0.4941134409455117
+2026-07-13 18:25:15,008 - trainer - INFO -     val_accuracy   : 0.8486328125
+2026-07-13 18:25:15,009 - trainer - INFO -     epoch_train_duration: 43.8

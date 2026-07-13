@@ -204,8 +204,8 @@ class BaseTrainer:
                 if "trgs" in file:
                      trgs_list.append(os.path.join(root, file))
 
-        #if len(outs_list)==self.config["data_loader"]["args"]["num_folds"]:
-        if len(outs_list) > 0:
+        # Replace the strict '== num_folds' block with a dynamic length check
+        if len(outs_list) > 0 and len(outs_list) == len(trgs_list):
             for i in range(len(outs_list)):
                 outs = np.load(outs_list[i])
                 trgs = np.load(trgs_list[i])

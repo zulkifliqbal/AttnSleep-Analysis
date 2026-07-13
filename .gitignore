@@ -1,0 +1,12 @@
+# Python cache files
+**/__pycache__/
+*.pyc
+
+# Deep learning weights and checkpoints
+*.pth
+
+# Large dataset files
+*.npz
+*.npy
+*.torch
+*.xlsx

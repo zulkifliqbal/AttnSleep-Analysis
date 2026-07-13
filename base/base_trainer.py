@@ -107,8 +107,8 @@ class BaseTrainer:
         np.save(self.config._save_dir / outs_name, all_outs)
         np.save(self.config._save_dir / trgs_name, all_trgs)
 
-        if self.fold_id == self.config["data_loader"]["args"]["num_folds"] - 1:
-            self._calc_metrics()
+        #if self.fold_id == self.config["data_loader"]["args"]["num_folds"] - 1:
+        self._calc_metrics()
 
     def _prepare_device(self, n_gpu_use):
         """
@@ -187,6 +187,8 @@ class BaseTrainer:
         import pandas as pd
         import os
         from os import walk
+        import matplotlib.pyplot as plt
+        import itertools
 
         n_folds = self.config["data_loader"]["args"]["num_folds"]
         all_outs = []
@@ -202,7 +204,8 @@ class BaseTrainer:
                 if "trgs" in file:
                      trgs_list.append(os.path.join(root, file))
 
-        if len(outs_list)==self.config["data_loader"]["args"]["num_folds"]:
+        #if len(outs_list)==self.config["data_loader"]["args"]["num_folds"]:
+        if len(outs_list) > 0:
             for i in range(len(outs_list)):
                 outs = np.load(outs_list[i])
                 trgs = np.load(trgs_list[i])
@@ -213,7 +216,7 @@ class BaseTrainer:
         all_outs = np.array(all_outs).astype(int)
 
         r = classification_report(all_trgs, all_outs, digits=6, output_dict=True)
-        cm = confusion_matrix(all_trgs, all_outs)
+        cm = confusion_matrix(all_trgs, all_outs) #reused for confusion matrix
         df = pd.DataFrame(r)
         df["cohen"] = cohen_kappa_score(all_trgs, all_outs)
         df["accuracy"] = accuracy_score(all_trgs, all_outs)
@@ -226,6 +229,40 @@ class BaseTrainer:
         cm_Save_path = os.path.join(save_dir, cm_file_name)
         torch.save(cm, cm_Save_path)
 
+        # Confusion matrix
+        class_names = ["W", "N1", "N2", "N3", "REM"]
+        plt.figure(figsize=(6, 6)) 
+        plt.imshow(cm, interpolation='nearest')  # Display matrix as an image
+        plt.title("Confusion Matrix")
+        plt.colorbar()  # Show color scale
+
+        # Set tick labels to class names
+        ticks = np.arange(len(class_names))
+        plt.xticks(ticks, class_names)
+        plt.yticks(ticks, class_names)
+
+        # Choose a threshold so text is readable on both dark/light cells
+        th = cm.max() / 2.0
+
+        # Write the integer counts into each cell
+        for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+            plt.text(
+                j, i, format(cm[i, j], 'd'),
+                ha="center",
+                va="center",
+                color="white" if cm[i, j] > th else "black",
+                fontsize=10
+            )
+
+        plt.tight_layout()
+        plt.ylabel('True')       # y-axis = true class
+        plt.xlabel('Predicted')  # x-axis = predicted class
+
+        # saving image
+        cm_file_name = self.config["name"] + "_cm.png"
+        cm_save_path = os.path.join(save_dir, cm_file_name)
+        plt.savefig(cm_save_path, dpi=150, bbox_inches='tight')
+        plt.close()
 
         # Uncomment if you want to copy some of the important files into the experiement folder
         # from shutil import copyfile

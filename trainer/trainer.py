@@ -1,3 +1,4 @@
+import time # EDIT - time module import
 import numpy as np
 import torch
 from base import BaseTrainer
@@ -19,7 +20,7 @@ class Trainer(BaseTrainer):
         self.valid_data_loader = valid_data_loader
         self.do_validation = self.valid_data_loader is not None
         self.lr_scheduler = optimizer
-        self.log_step = int(data_loader.batch_size) * 1  # reduce this if you want more logs
+        self.log_step = 5  # reduce this if you want more logs
 
         self.train_metrics = MetricTracker('loss', *[m.__name__ for m in self.metric_ftns])
         self.valid_metrics = MetricTracker('loss', *[m.__name__ for m in self.metric_ftns])
@@ -40,6 +41,7 @@ class Trainer(BaseTrainer):
         self.train_metrics.reset()
         overall_outs = []
         overall_trgs = []
+        epoch_start_time = time.time() # EDIT - timer start
         for batch_idx, (data, target) in enumerate(self.data_loader):
             data, target = data.to(self.device), target.to(self.device)
 
@@ -82,6 +84,7 @@ class Trainer(BaseTrainer):
                 for g in self.lr_scheduler.param_groups:
                     g['lr'] = 0.0001
 
+        log["epoch_train_duration"] = round(time.time() - epoch_start_time, 2) # EDIT - adds duration of epoch to the log in seconds
         return log, overall_outs, overall_trgs
 
     def _valid_epoch(self, epoch):

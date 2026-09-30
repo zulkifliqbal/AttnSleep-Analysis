@@ -1,0 +1,357 @@
+2026-09-29 22:12:13,757 - train - INFO - AttnSleep_PostNorm(
+  (mrcnn): MRCNN(
+    (GELU): GELU()
+    (features1): Sequential(
+      (0): Conv1d(1, 64, kernel_size=(50,), stride=(6,), padding=(24,), bias=False)
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): GELU()
+      (3): MaxPool1d(kernel_size=8, stride=2, padding=4, dilation=1, ceil_mode=False)
+      (4): Dropout(p=0.5, inplace=False)
+      (5): Conv1d(64, 128, kernel_size=(8,), stride=(1,), padding=(4,), bias=False)
+      (6): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (7): GELU()
+      (8): Conv1d(128, 128, kernel_size=(8,), stride=(1,), padding=(4,), bias=False)
+      (9): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (10): GELU()
+      (11): MaxPool1d(kernel_size=4, stride=4, padding=2, dilation=1, ceil_mode=False)
+    )
+    (features2): Sequential(
+      (0): Conv1d(1, 64, kernel_size=(400,), stride=(50,), padding=(200,), bias=False)
+      (1): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): GELU()
+      (3): MaxPool1d(kernel_size=4, stride=2, padding=2, dilation=1, ceil_mode=False)
+      (4): Dropout(p=0.5, inplace=False)
+      (5): Conv1d(64, 128, kernel_size=(7,), stride=(1,), padding=(3,), bias=False)
+      (6): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (7): GELU()
+      (8): Conv1d(128, 128, kernel_size=(7,), stride=(1,), padding=(3,), bias=False)
+      (9): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (10): GELU()
+      (11): MaxPool1d(kernel_size=2, stride=2, padding=1, dilation=1, ceil_mode=False)
+    )
+    (dropout): Dropout(p=0.5, inplace=False)
+    (AFR): Sequential(
+      (0): SEBasicBlock(
+        (conv1): Conv1d(128, 30, kernel_size=(1,), stride=(1,))
+        (bn1): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv1d(30, 30, kernel_size=(1,), stride=(1,))
+        (bn2): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (se): SELayer(
+          (avg_pool): AdaptiveAvgPool1d(output_size=1)
+          (fc): Sequential(
+            (0): Linear(in_features=30, out_features=1, bias=False)
+            (1): ReLU(inplace=True)
+            (2): Linear(in_features=1, out_features=30, bias=False)
+            (3): Sigmoid()
+          )
+        )
+        (downsample): Sequential(
+          (0): Conv1d(128, 30, kernel_size=(1,), stride=(1,), bias=False)
+          (1): BatchNorm1d(30, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+  )
+  (tce): TCE(
+    (layers): ModuleList(
+      (0): EncoderLayerPostNorm(
+        (self_attn): MultiHeadedAttention(
+          (convs): ModuleList(
+            (0): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (1): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (2): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+          )
+          (linear): Linear(in_features=80, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=80, out_features=120, bias=True)
+          (w_2): Linear(in_features=120, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (sublayer_output): ModuleList(
+          (0): SublayerOutputPostNorm(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (1): SublayerOutputPostNorm(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (conv): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+      )
+      (1): EncoderLayerPostNorm(
+        (self_attn): MultiHeadedAttention(
+          (convs): ModuleList(
+            (0): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (1): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+            (2): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+          )
+          (linear): Linear(in_features=80, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (feed_forward): PositionwiseFeedForward(
+          (w_1): Linear(in_features=80, out_features=120, bias=True)
+          (w_2): Linear(in_features=120, out_features=80, bias=True)
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (sublayer_output): ModuleList(
+          (0): SublayerOutputPostNorm(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (1): SublayerOutputPostNorm(
+            (norm): LayerNorm()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (conv): CausalConv1d(30, 30, kernel_size=(7,), stride=(1,), padding=(6,))
+      )
+    )
+    (norm): LayerNorm()
+  )
+  (fc): Linear(in_features=2400, out_features=5, bias=True)
+)
+2026-09-29 22:12:35,136 - trainer - INFO -     epoch          : 1
+2026-09-29 22:12:35,137 - trainer - INFO -     loss           : 0.7444594464724577
+2026-09-29 22:12:35,137 - trainer - INFO -     accuracy       : 0.7319274129746836
+2026-09-29 22:12:35,137 - trainer - INFO -     val_loss       : 0.4571397684048861
+2026-09-29 22:12:35,137 - trainer - INFO -     val_accuracy   : 0.8761935763888888
+2026-09-29 22:12:35,137 - trainer - INFO -     epoch_train_duration: 15.2
+2026-09-29 22:12:48,067 - trainer - INFO -     epoch          : 2
+2026-09-29 22:12:48,067 - trainer - INFO -     loss           : 0.5819560528933247
+2026-09-29 22:12:48,068 - trainer - INFO -     accuracy       : 0.7991495253164557
+2026-09-29 22:12:48,068 - trainer - INFO -     val_loss       : 0.6718292771838605
+2026-09-29 22:12:48,068 - trainer - INFO -     val_accuracy   : 0.77587890625
+2026-09-29 22:12:48,068 - trainer - INFO -     epoch_train_duration: 12.93
+2026-09-29 22:13:00,900 - trainer - INFO -     epoch          : 3
+2026-09-29 22:13:00,900 - trainer - INFO -     loss           : 0.5459756898351863
+2026-09-29 22:13:00,900 - trainer - INFO -     accuracy       : 0.8124752768987342
+2026-09-29 22:13:00,900 - trainer - INFO -     val_loss       : 0.49130220408551395
+2026-09-29 22:13:00,900 - trainer - INFO -     val_accuracy   : 0.8505859375
+2026-09-29 22:13:00,900 - trainer - INFO -     epoch_train_duration: 12.83
+2026-09-29 22:13:14,591 - trainer - INFO -     epoch          : 4
+2026-09-29 22:13:14,591 - trainer - INFO -     loss           : 0.5240069529678248
+2026-09-29 22:13:14,591 - trainer - INFO -     accuracy       : 0.8185571598101266
+2026-09-29 22:13:14,591 - trainer - INFO -     val_loss       : 0.44043164188042283
+2026-09-29 22:13:14,591 - trainer - INFO -     val_accuracy   : 0.86474609375
+2026-09-29 22:13:14,591 - trainer - INFO -     epoch_train_duration: 13.69
+2026-09-29 22:13:28,944 - trainer - INFO -     epoch          : 5
+2026-09-29 22:13:28,944 - trainer - INFO -     loss           : 0.5058707727850238
+2026-09-29 22:13:28,944 - trainer - INFO -     accuracy       : 0.8263449367088608
+2026-09-29 22:13:28,944 - trainer - INFO -     val_loss       : 0.4695978621020913
+2026-09-29 22:13:28,945 - trainer - INFO -     val_accuracy   : 0.83935546875
+2026-09-29 22:13:28,945 - trainer - INFO -     epoch_train_duration: 14.35
+2026-09-29 22:13:44,550 - trainer - INFO -     epoch          : 6
+2026-09-29 22:13:44,550 - trainer - INFO -     loss           : 0.49500348598142213
+2026-09-29 22:13:44,550 - trainer - INFO -     accuracy       : 0.8301275712025317
+2026-09-29 22:13:44,550 - trainer - INFO -     val_loss       : 0.5035540410317481
+2026-09-29 22:13:44,550 - trainer - INFO -     val_accuracy   : 0.84033203125
+2026-09-29 22:13:44,551 - trainer - INFO -     epoch_train_duration: 15.6
+2026-09-29 22:14:01,502 - trainer - INFO -     epoch          : 7
+2026-09-29 22:14:01,502 - trainer - INFO -     loss           : 0.48352044547283196
+2026-09-29 22:14:01,502 - trainer - INFO -     accuracy       : 0.834824960443038
+2026-09-29 22:14:01,503 - trainer - INFO -     val_loss       : 0.4972226206155028
+2026-09-29 22:14:01,503 - trainer - INFO -     val_accuracy   : 0.84033203125
+2026-09-29 22:14:01,503 - trainer - INFO -     epoch_train_duration: 16.95
+2026-09-29 22:14:16,241 - trainer - INFO -     epoch          : 8
+2026-09-29 22:14:16,241 - trainer - INFO -     loss           : 0.47756274921607367
+2026-09-29 22:14:16,242 - trainer - INFO -     accuracy       : 0.8353688686708861
+2026-09-29 22:14:16,242 - trainer - INFO -     val_loss       : 0.7848513736389577
+2026-09-29 22:14:16,242 - trainer - INFO -     val_accuracy   : 0.72705078125
+2026-09-29 22:14:16,242 - trainer - INFO -     epoch_train_duration: 14.74
+2026-09-29 22:14:30,625 - trainer - INFO -     epoch          : 9
+2026-09-29 22:14:30,625 - trainer - INFO -     loss           : 0.474189279483089
+2026-09-29 22:14:30,626 - trainer - INFO -     accuracy       : 0.8345035601265823
+2026-09-29 22:14:30,626 - trainer - INFO -     val_loss       : 0.44217291701352224
+2026-09-29 22:14:30,626 - trainer - INFO -     val_accuracy   : 0.86865234375
+2026-09-29 22:14:30,626 - trainer - INFO -     epoch_train_duration: 14.38
+2026-09-29 22:14:47,829 - trainer - INFO -     epoch          : 10
+2026-09-29 22:14:47,830 - trainer - INFO -     loss           : 0.46722561092693593
+2026-09-29 22:14:47,831 - trainer - INFO -     accuracy       : 0.8378659018987342
+2026-09-29 22:14:47,831 - trainer - INFO -     val_loss       : 0.3995431996008847
+2026-09-29 22:14:47,831 - trainer - INFO -     val_accuracy   : 0.87841796875
+2026-09-29 22:14:47,831 - trainer - INFO -     epoch_train_duration: 17.2
+2026-09-29 22:15:44,889 - trainer - INFO -     epoch          : 11
+2026-09-29 22:15:44,889 - trainer - INFO -     loss           : 0.42948672231994095
+2026-09-29 22:15:44,889 - trainer - INFO -     accuracy       : 0.8528481012658228
+2026-09-29 22:15:44,889 - trainer - INFO -     val_loss       : 0.4519386710016988
+2026-09-29 22:15:44,890 - trainer - INFO -     val_accuracy   : 0.8671875
+2026-09-29 22:15:44,890 - trainer - INFO -     epoch_train_duration: 57.06
+2026-09-29 22:16:23,449 - trainer - INFO -     epoch          : 12
+2026-09-29 22:16:23,449 - trainer - INFO -     loss           : 0.4183709456856492
+2026-09-29 22:16:23,449 - trainer - INFO -     accuracy       : 0.8558643196202531
+2026-09-29 22:16:23,449 - trainer - INFO -     val_loss       : 0.4319563845929224
+2026-09-29 22:16:23,451 - trainer - INFO -     val_accuracy   : 0.87255859375
+2026-09-29 22:16:23,451 - trainer - INFO -     epoch_train_duration: 38.56
+2026-09-29 22:16:41,416 - trainer - INFO -     epoch          : 13
+2026-09-29 22:16:41,416 - trainer - INFO -     loss           : 0.41402272182174876
+2026-09-29 22:16:41,416 - trainer - INFO -     accuracy       : 0.8593502768987342
+2026-09-29 22:16:41,417 - trainer - INFO -     val_loss       : 0.4298148476809729
+2026-09-29 22:16:41,417 - trainer - INFO -     val_accuracy   : 0.87646484375
+2026-09-29 22:16:41,417 - trainer - INFO -     epoch_train_duration: 17.97
+2026-09-29 22:16:54,816 - trainer - INFO -     epoch          : 14
+2026-09-29 22:16:54,816 - trainer - INFO -     loss           : 0.41326898326979405
+2026-09-29 22:16:54,817 - trainer - INFO -     accuracy       : 0.8569768591772152
+2026-09-29 22:16:54,817 - trainer - INFO -     val_loss       : 0.42434562515700236
+2026-09-29 22:16:54,817 - trainer - INFO -     val_accuracy   : 0.8759765625
+2026-09-29 22:16:54,817 - trainer - INFO -     epoch_train_duration: 13.4
+2026-09-29 22:17:07,816 - trainer - INFO -     epoch          : 15
+2026-09-29 22:17:07,816 - trainer - INFO -     loss           : 0.40809832018198844
+2026-09-29 22:17:07,816 - trainer - INFO -     accuracy       : 0.8609572784810127
+2026-09-29 22:17:07,816 - trainer - INFO -     val_loss       : 0.4278271443909034
+2026-09-29 22:17:07,816 - trainer - INFO -     val_accuracy   : 0.87548828125
+2026-09-29 22:17:07,817 - trainer - INFO -     epoch_train_duration: 13.0
+2026-09-29 22:17:21,008 - trainer - INFO -     epoch          : 16
+2026-09-29 22:17:21,008 - trainer - INFO -     loss           : 0.40504765666172476
+2026-09-29 22:17:21,008 - trainer - INFO -     accuracy       : 0.8607347705696202
+2026-09-29 22:17:21,008 - trainer - INFO -     val_loss       : 0.44085143276606686
+2026-09-29 22:17:21,008 - trainer - INFO -     val_accuracy   : 0.87109375
+2026-09-29 22:17:21,008 - trainer - INFO -     epoch_train_duration: 13.19
+2026-09-29 22:17:34,371 - trainer - INFO -     epoch          : 17
+2026-09-29 22:17:34,371 - trainer - INFO -     loss           : 0.40291564025079146
+2026-09-29 22:17:34,372 - trainer - INFO -     accuracy       : 0.8628856803797469
+2026-09-29 22:17:34,372 - trainer - INFO -     val_loss       : 0.4186220685951412
+2026-09-29 22:17:34,372 - trainer - INFO -     val_accuracy   : 0.87939453125
+2026-09-29 22:17:34,372 - trainer - INFO -     epoch_train_duration: 13.36
+2026-09-29 22:17:48,252 - trainer - INFO -     epoch          : 18
+2026-09-29 22:17:48,252 - trainer - INFO -     loss           : 0.3995216198359864
+2026-09-29 22:17:48,252 - trainer - INFO -     accuracy       : 0.8615011867088608
+2026-09-29 22:17:48,252 - trainer - INFO -     val_loss       : 0.4359523194725625
+2026-09-29 22:17:48,252 - trainer - INFO -     val_accuracy   : 0.8740234375
+2026-09-29 22:17:48,253 - trainer - INFO -     epoch_train_duration: 13.88
+2026-09-29 22:18:02,659 - trainer - INFO -     epoch          : 19
+2026-09-29 22:18:02,659 - trainer - INFO -     loss           : 0.39994430452396595
+2026-09-29 22:18:02,660 - trainer - INFO -     accuracy       : 0.8628856803797469
+2026-09-29 22:18:02,660 - trainer - INFO -     val_loss       : 0.4448031781357713
+2026-09-29 22:18:02,660 - trainer - INFO -     val_accuracy   : 0.87451171875
+2026-09-29 22:18:02,660 - trainer - INFO -     epoch_train_duration: 14.41
+2026-09-29 22:18:17,272 - trainer - INFO -     epoch          : 20
+2026-09-29 22:18:17,272 - trainer - INFO -     loss           : 0.397582433127527
+2026-09-29 22:18:17,272 - trainer - INFO -     accuracy       : 0.8618473101265823
+2026-09-29 22:18:17,273 - trainer - INFO -     val_loss       : 0.45300302404211834
+2026-09-29 22:18:17,273 - trainer - INFO -     val_accuracy   : 0.8681640625
+2026-09-29 22:18:17,273 - trainer - INFO -     epoch_train_duration: 14.61
+2026-09-29 22:18:31,637 - trainer - INFO -     epoch          : 21
+2026-09-29 22:18:31,637 - trainer - INFO -     loss           : 0.397069968660421
+2026-09-29 22:18:31,637 - trainer - INFO -     accuracy       : 0.8632565268987342
+2026-09-29 22:18:31,637 - trainer - INFO -     val_loss       : 0.4410275849804748
+2026-09-29 22:18:31,638 - trainer - INFO -     val_accuracy   : 0.8681640625
+2026-09-29 22:18:31,638 - trainer - INFO -     epoch_train_duration: 14.36
+2026-09-29 22:18:46,125 - trainer - INFO -     epoch          : 22
+2026-09-29 22:18:46,125 - trainer - INFO -     loss           : 0.3949625759939604
+2026-09-29 22:18:46,125 - trainer - INFO -     accuracy       : 0.8640476661392406
+2026-09-29 22:18:46,125 - trainer - INFO -     val_loss       : 0.43837764859199524
+2026-09-29 22:18:46,125 - trainer - INFO -     val_accuracy   : 0.87646484375
+2026-09-29 22:18:46,125 - trainer - INFO -     epoch_train_duration: 14.49
+2026-09-29 22:19:00,352 - trainer - INFO -     epoch          : 23
+2026-09-29 22:19:00,352 - trainer - INFO -     loss           : 0.3912775539144685
+2026-09-29 22:19:00,352 - trainer - INFO -     accuracy       : 0.8661244066455697
+2026-09-29 22:19:00,353 - trainer - INFO -     val_loss       : 0.4557264320901595
+2026-09-29 22:19:00,353 - trainer - INFO -     val_accuracy   : 0.86572265625
+2026-09-29 22:19:00,353 - trainer - INFO -     epoch_train_duration: 14.23
+2026-09-29 22:19:14,794 - trainer - INFO -     epoch          : 24
+2026-09-29 22:19:14,795 - trainer - INFO -     loss           : 0.3892243947786621
+2026-09-29 22:19:14,795 - trainer - INFO -     accuracy       : 0.8665199762658228
+2026-09-29 22:19:14,795 - trainer - INFO -     val_loss       : 0.42472446215106174
+2026-09-29 22:19:14,795 - trainer - INFO -     val_accuracy   : 0.8720703125
+2026-09-29 22:19:14,795 - trainer - INFO -     epoch_train_duration: 14.44
+2026-09-29 22:19:28,965 - trainer - INFO -     epoch          : 25
+2026-09-29 22:19:28,965 - trainer - INFO -     loss           : 0.3868469423791276
+2026-09-29 22:19:28,965 - trainer - INFO -     accuracy       : 0.8671875
+2026-09-29 22:19:28,966 - trainer - INFO -     val_loss       : 0.439662667340599
+2026-09-29 22:19:28,966 - trainer - INFO -     val_accuracy   : 0.8759765625
+2026-09-29 22:19:28,966 - trainer - INFO -     epoch_train_duration: 14.17
+2026-09-29 22:19:43,455 - trainer - INFO -     epoch          : 26
+2026-09-29 22:19:43,456 - trainer - INFO -     loss           : 0.38581974993023693
+2026-09-29 22:19:43,456 - trainer - INFO -     accuracy       : 0.8681764240506329
+2026-09-29 22:19:43,456 - trainer - INFO -     val_loss       : 0.44410862555378117
+2026-09-29 22:19:43,456 - trainer - INFO -     val_accuracy   : 0.8701171875
+2026-09-29 22:19:43,456 - trainer - INFO -     epoch_train_duration: 14.49
+2026-09-29 22:19:58,211 - trainer - INFO -     epoch          : 27
+2026-09-29 22:19:58,211 - trainer - INFO -     loss           : 0.3838763346400442
+2026-09-29 22:19:58,211 - trainer - INFO -     accuracy       : 0.8669897151898734
+2026-09-29 22:19:58,212 - trainer - INFO -     val_loss       : 0.4073034801549511
+2026-09-29 22:19:58,212 - trainer - INFO -     val_accuracy   : 0.88671875
+2026-09-29 22:19:58,212 - trainer - INFO -     epoch_train_duration: 14.75
+2026-09-29 22:20:14,487 - trainer - INFO -     epoch          : 28
+2026-09-29 22:20:14,487 - trainer - INFO -     loss           : 0.38432275414278233
+2026-09-29 22:20:14,487 - trainer - INFO -     accuracy       : 0.8660996835443038
+2026-09-29 22:20:14,487 - trainer - INFO -     val_loss       : 0.4450195195386186
+2026-09-29 22:20:14,488 - trainer - INFO -     val_accuracy   : 0.87158203125
+2026-09-29 22:20:14,488 - trainer - INFO -     epoch_train_duration: 16.28
+2026-09-29 22:20:32,142 - trainer - INFO -     epoch          : 29
+2026-09-29 22:20:32,142 - trainer - INFO -     loss           : 0.3815759612318081
+2026-09-29 22:20:32,143 - trainer - INFO -     accuracy       : 0.8699317642405063
+2026-09-29 22:20:32,143 - trainer - INFO -     val_loss       : 0.43739236463443376
+2026-09-29 22:20:32,143 - trainer - INFO -     val_accuracy   : 0.8759765625
+2026-09-29 22:20:32,143 - trainer - INFO -     epoch_train_duration: 17.65
+2026-09-29 22:20:50,308 - trainer - INFO -     epoch          : 30
+2026-09-29 22:20:50,309 - trainer - INFO -     loss           : 0.38042923633622217
+2026-09-29 22:20:50,309 - trainer - INFO -     accuracy       : 0.8682753164556962
+2026-09-29 22:20:50,309 - trainer - INFO -     val_loss       : 0.42810689413454384
+2026-09-29 22:20:50,309 - trainer - INFO -     val_accuracy   : 0.88330078125
+2026-09-29 22:20:50,309 - trainer - INFO -     epoch_train_duration: 18.17
+2026-09-29 22:20:50,350 - trainer - INFO - Saving checkpoint: saved\Exp1_PostNorm\29_09_2026_22_12_13_fold0\checkpoint-epoch30.pth ...
+2026-09-29 22:21:08,453 - trainer - INFO -     epoch          : 31
+2026-09-29 22:21:08,453 - trainer - INFO -     loss           : 0.37893360796608505
+2026-09-29 22:21:08,453 - trainer - INFO -     accuracy       : 0.8702284414556962
+2026-09-29 22:21:08,453 - trainer - INFO -     val_loss       : 0.43765519103908446
+2026-09-29 22:21:08,453 - trainer - INFO -     val_accuracy   : 0.87548828125
+2026-09-29 22:21:08,454 - trainer - INFO -     epoch_train_duration: 18.1
+2026-09-29 22:21:26,691 - trainer - INFO -     epoch          : 32
+2026-09-29 22:21:26,691 - trainer - INFO -     loss           : 0.37620595253155203
+2026-09-29 22:21:26,691 - trainer - INFO -     accuracy       : 0.869412579113924
+2026-09-29 22:21:26,691 - trainer - INFO -     val_loss       : 0.4341950993402861
+2026-09-29 22:21:26,692 - trainer - INFO -     val_accuracy   : 0.87841796875
+2026-09-29 22:21:26,692 - trainer - INFO -     epoch_train_duration: 18.24
+2026-09-29 22:21:45,654 - trainer - INFO -     epoch          : 33
+2026-09-29 22:21:45,655 - trainer - INFO -     loss           : 0.3755479854873464
+2026-09-29 22:21:45,655 - trainer - INFO -     accuracy       : 0.8702037183544303
+2026-09-29 22:21:45,655 - trainer - INFO -     val_loss       : 0.4301063198654447
+2026-09-29 22:21:45,655 - trainer - INFO -     val_accuracy   : 0.875
+2026-09-29 22:21:45,655 - trainer - INFO -     epoch_train_duration: 18.96
+2026-09-29 22:22:05,381 - trainer - INFO -     epoch          : 34
+2026-09-29 22:22:05,381 - trainer - INFO -     loss           : 0.37562547770293453
+2026-09-29 22:22:05,382 - trainer - INFO -     accuracy       : 0.8701295490506329
+2026-09-29 22:22:05,382 - trainer - INFO -     val_loss       : 0.43137864231539425
+2026-09-29 22:22:05,382 - trainer - INFO -     val_accuracy   : 0.87451171875
+2026-09-29 22:22:05,382 - trainer - INFO -     epoch_train_duration: 19.72
+2026-09-29 22:22:24,698 - trainer - INFO -     epoch          : 35
+2026-09-29 22:22:24,698 - trainer - INFO -     loss           : 0.36963053754990616
+2026-09-29 22:22:24,699 - trainer - INFO -     accuracy       : 0.8712173655063291
+2026-09-29 22:22:24,699 - trainer - INFO -     val_loss       : 0.41588418290484697
+2026-09-29 22:22:24,699 - trainer - INFO -     val_accuracy   : 0.880859375
+2026-09-29 22:22:24,699 - trainer - INFO -     epoch_train_duration: 19.32
+2026-09-29 22:22:44,455 - trainer - INFO -     epoch          : 36
+2026-09-29 22:22:44,455 - trainer - INFO -     loss           : 0.37180373676215545
+2026-09-29 22:22:44,455 - trainer - INFO -     accuracy       : 0.8709206882911392
+2026-09-29 22:22:44,455 - trainer - INFO -     val_loss       : 0.44355988752795383
+2026-09-29 22:22:44,456 - trainer - INFO -     val_accuracy   : 0.865234375
+2026-09-29 22:22:44,456 - trainer - INFO -     epoch_train_duration: 19.76
+2026-09-29 22:23:04,027 - trainer - INFO -     epoch          : 37
+2026-09-29 22:23:04,028 - trainer - INFO -     loss           : 0.36716804379903817
+2026-09-29 22:23:04,028 - trainer - INFO -     accuracy       : 0.872774920886076
+2026-09-29 22:23:04,028 - trainer - INFO -     val_loss       : 0.4588233967369888
+2026-09-29 22:23:04,028 - trainer - INFO -     val_accuracy   : 0.86376953125
+2026-09-29 22:23:04,029 - trainer - INFO -     epoch_train_duration: 19.57
+2026-09-29 22:23:24,974 - trainer - INFO -     epoch          : 38
+2026-09-29 22:23:24,974 - trainer - INFO -     loss           : 0.3658582789799835
+2026-09-29 22:23:24,974 - trainer - INFO -     accuracy       : 0.8737885680379747
+2026-09-29 22:23:24,975 - trainer - INFO -     val_loss       : 0.464646119158715
+2026-09-29 22:23:24,975 - trainer - INFO -     val_accuracy   : 0.86279296875
+2026-09-29 22:23:24,975 - trainer - INFO -     epoch_train_duration: 20.95
+2026-09-29 22:23:44,916 - trainer - INFO -     epoch          : 39
+2026-09-29 22:23:44,917 - trainer - INFO -     loss           : 0.3664868569732467
+2026-09-29 22:23:44,917 - trainer - INFO -     accuracy       : 0.8714151503164557
+2026-09-29 22:23:44,917 - trainer - INFO -     val_loss       : 0.4352564122818876
+2026-09-29 22:23:44,917 - trainer - INFO -     val_accuracy   : 0.8779296875
+2026-09-29 22:23:44,917 - trainer - INFO -     epoch_train_duration: 19.94
+2026-09-29 22:24:05,892 - trainer - INFO -     epoch          : 40
+2026-09-29 22:24:05,893 - trainer - INFO -     loss           : 0.3642938563340827
+2026-09-29 22:24:05,893 - trainer - INFO -     accuracy       : 0.8731704905063291
+2026-09-29 22:24:05,893 - trainer - INFO -     val_loss       : 0.43808687455020845
+2026-09-29 22:24:05,893 - trainer - INFO -     val_accuracy   : 0.8779296875
+2026-09-29 22:24:05,893 - trainer - INFO -     epoch_train_duration: 20.97

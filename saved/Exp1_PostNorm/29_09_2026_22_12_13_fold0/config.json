@@ -1,8 +1,8 @@
 {
-    "name": "Exp1",
+    "name": "Exp1_PostNorm",
     "n_gpu": 1,
     "arch": {
-        "type": "AttnSleep",
+        "type": "AttnSleep_PostNorm",
         "args": {}
     },
     "data_loader": {
@@ -24,7 +24,7 @@
         "accuracy"
     ],
     "trainer": {
-        "epochs": 100,
+        "epochs": 40,
         "save_dir": "saved/",
         "save_period": 30,
         "verbosity": 2,

@@ -26,7 +26,7 @@
         "accuracy"
     ],
     "trainer": {
-        "epochs": 20,
+        "epochs": 40,
         "save_dir": "saved/",
         "save_period": 30,
         "verbosity": 2,

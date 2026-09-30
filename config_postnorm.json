@@ -1,19 +1,21 @@
 {
-    "name": "Exp1",
+    "name": "Exp1_PostNorm",
     "n_gpu": 1,
+
     "arch": {
-        "type": "AttnSleep",
-        "args": {}
+        "type": "AttnSleep_PostNorm",
+        "args": {
+        }
     },
     "data_loader": {
-        "args": {
+        "args":{
             "batch_size": 128,
             "num_folds": 20
         }
     },
     "optimizer": {
         "type": "Adam",
-        "args": {
+        "args":{
             "lr": 0.001,
             "weight_decay": 0.001,
             "amsgrad": true
@@ -24,7 +26,7 @@
         "accuracy"
     ],
     "trainer": {
-        "epochs": 10,
+        "epochs": 40,
         "save_dir": "saved/",
         "save_period": 30,
         "verbosity": 2,

@@ -398,3 +398,70 @@ class MRCNN_SHHS(nn.Module):
         x_concat = self.dropout(x_concat)
         x_concat = self.AFR(x_concat)
         return x_concat
+
+#Appended code below | above code is unmodified
+
+class SublayerOutputPostNorm(nn.Module):
+    '''
+    Identical to class Sublayer Output except a post-norm residual connection is implemented.
+    '''
+
+    def __init__(self, size, dropout):
+        super(SublayerOutputPostNorm, self).__init__()
+        self.norm = LayerNorm(size)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x, sublayer):
+        return self.norm(x + self.dropout(sublayer(x)))
+
+
+class EncoderLayerPostNorm(nn.Module):
+    '''
+    Identical to class EncoderLayer except lambda parameter renamed from x to _
+    '''
+    
+    def __init__(self, size, self_attn, feed_forward, afr_reduced_cnn_size, dropout):
+        super(EncoderLayerPostNorm, self).__init__()
+        self.self_attn = self_attn
+        self.feed_forward = feed_forward
+        self.sublayer_output = clones(SublayerOutputPostNorm(size, dropout), 2)
+        self.size = size
+        self.conv = CausalConv1d(afr_reduced_cnn_size, afr_reduced_cnn_size, kernel_size=7, stride=1, dilation=1)
+
+
+    def forward(self, x_in):
+        query = self.conv(x_in)
+        x = self.sublayer_output[0](query, lambda _: self.self_attn(query, x_in, x_in)) 
+        return self.sublayer_output[1](x, self.feed_forward)
+
+
+class AttnSleep_PostNorm(nn.Module):
+    '''
+    Identical to AttnSleep except the TCE sublayers use true post-norm.
+    '''
+
+    def __init__(self):
+        super(AttnSleep_PostNorm, self).__init__()
+
+        N = 2  
+        d_model = 80  
+        d_ff = 120   
+        h = 5 
+        dropout = 0.1
+        num_classes = 5
+        afr_reduced_cnn_size = 30
+
+        self.mrcnn = MRCNN(afr_reduced_cnn_size) 
+
+        attn = MultiHeadedAttention(h, d_model, afr_reduced_cnn_size)
+        ff = PositionwiseFeedForward(d_model, d_ff, dropout)
+        self.tce = TCE(EncoderLayerPostNorm(d_model, deepcopy(attn), deepcopy(ff), afr_reduced_cnn_size, dropout), N)
+
+        self.fc = nn.Linear(d_model * afr_reduced_cnn_size, num_classes)
+
+    def forward(self, x):
+        x_feat = self.mrcnn(x)
+        encoded_features = self.tce(x_feat)
+        encoded_features = encoded_features.contiguous().view(encoded_features.shape[0], -1)
+        final_output = self.fc(encoded_features)
+        return final_output
